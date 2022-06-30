@@ -8,8 +8,7 @@ Pour commencer et lancer les tests :
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
-# [Invoking pytest versus python -m pytest](https://docs.pytest.org/en/6.2.x/pythonpath.html#invoking-pytest-versus-python-m-pytest)
-$ python -m pytest . -v
+$ pytest .
 ```
 
 # Exercice
