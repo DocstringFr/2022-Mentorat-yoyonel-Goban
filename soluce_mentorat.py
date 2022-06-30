@@ -7,11 +7,13 @@
     - ❌ le test unitaire `test_black_shape_is_not_taken_when_it_has_a_liberty`
         sur la forme avec une liberté sur une des pièces ne fonctionne pas (normal)
 """
+from typing import List
+
 from goban import Goban, Status
 
 
 class SolutionMentoratGoban(Goban):
-    def __init__(self, goban: list[str]):
+    def __init__(self, goban: List[str]):
         super().__init__(goban)
 
     def is_taken(self, x: int, y: int) -> bool:
