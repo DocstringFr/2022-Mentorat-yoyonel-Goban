@@ -1,0 +1,3 @@
+[submodule "doc"]
+	path = doc
+	url = git@github.com:DocstringFr/2022-Mentorat-yoyonel-Goban.wiki.git
