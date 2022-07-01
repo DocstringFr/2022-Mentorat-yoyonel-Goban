@@ -1,4 +1,5 @@
-[FR]
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Github Actions](https://github.com/DocstringFr/2022-Mentorat-yoyonel-Goban/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DocstringFr/2022-Mentorat-yoyonel-Goban/actions/workflows/test.yml)
 
 # Comment lancer le projet
 
