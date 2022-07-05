@@ -1,6 +1,10 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Github Actions](https://github.com/DocstringFr/2022-Mentorat-yoyonel-Goban/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DocstringFr/2022-Mentorat-yoyonel-Goban/actions/workflows/test.yml)
 
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/)
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 # Comment lancer le projet
 
 Pour commencer et lancer les tests :
