@@ -30,10 +30,10 @@ class SolutionMentoratGoban(Goban):
 
         # Initialisation de l'historique des positions testées et de l'état de la forme
         if positions is None:
-            positions = set()
+            positions = {(x, y)}
 
         # 2ème étape: ❓ Est une position adjacente est libre ❓
-        status_positions_adjacentes: list[Tuple[Status, Tuple[int, int]]] = [
+        status_positions_adjacentes: List[Tuple[Status, Tuple[int, int]]] = [
             (self.get_status(x + 1, y), (x + 1, y)),  # position adjacente ➡ droite
             (self.get_status(x - 1, y), (x - 1, y)),  # position adjacente ⬅ gauche
             (self.get_status(x, y + 1), (x, y + 1)),  # position adjacente ⬇ bas
@@ -51,12 +51,12 @@ class SolutionMentoratGoban(Goban):
             # - Pas déjà testé
             # - La position actuelle est de la couleur de la position adjacente
             elif not self._shape_is_free and \
-                    (x, y) not in positions and \
+                    position_adjacente not in positions and \
                     status_position == status_position_adjacente:
                 # Ajout de la position à l'historique
                 positions.add((x, y))
                 # Appel récursif de la méthode avec nouvelle position et historique des positions testées
-                self.is_taken(position_adjacente[0], position_adjacente[1], positions=positions)
+                self.is_taken(*position_adjacente, positions=positions)
 
         # Retourne que la pièce est prise si la forme n'a pas de liberté
         return not self._shape_is_free
