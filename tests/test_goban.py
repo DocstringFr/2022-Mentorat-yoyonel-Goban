@@ -51,7 +51,7 @@ def test_black_shape_is_taken_when_surrounded():
 
 
 # [XFail: mark test functions as expected to fail](https://docs.pytest.org/en/7.1.x/how-to/skipping.html#reason-parameter)
-# @pytest.mark.xfail(reason="La récursivité n'est pas encore implémentée")
+@pytest.mark.xfail(reason="La récursivité n'est pas encore implémentée")
 def test_black_shape_is_not_taken_when_it_has_a_liberty():
     goban = Goban(
         [
