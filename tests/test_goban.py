@@ -72,8 +72,9 @@ def test_more_complex_black_shape_is_taken():
         [
             "..oo..",
             ".o##oo",
-            "o#o###",
-            "o###oo",
+            ".oo###",
+            "o#o#oo",
+            "o###o.",
             ".ooo.."
         ]
     )
@@ -82,13 +83,15 @@ def test_more_complex_black_shape_is_taken():
     assert goban.is_taken(5, 2) is True
     assert goban.is_taken(3, 3) is True
 
+
 def test_more_complex_black_shape_is_not_taken():
     goban = Goban(
         [
             "..oo..",
             ".o##oo",
-            ".#o###",
-            "o###oo",
+            "..o###",
+            "o#o#oo",
+            "o###o.",
             ".ooo.."
         ]
     )
