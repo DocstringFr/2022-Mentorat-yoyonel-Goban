@@ -67,6 +67,37 @@ def test_black_shape_is_not_taken_when_it_has_a_liberty():
     assert goban.is_taken(1, 2) is False
 
 
+def test_more_complex_black_shape_is_taken():
+    goban = Goban(
+        [
+            "..oo..",
+            ".o##oo",
+            "o#o###",
+            "o###oo",
+            ".ooo.."
+        ]
+    )
+
+    assert goban.is_taken(2, 1) is True
+    assert goban.is_taken(5, 2) is True
+    assert goban.is_taken(3, 3) is True
+
+def test_more_complex_black_shape_is_not_taken():
+    goban = Goban(
+        [
+            "..oo..",
+            ".o##oo",
+            ".#o###",
+            "o###oo",
+            ".ooo.."
+        ]
+    )
+
+    assert goban.is_taken(2, 1) is False
+    assert goban.is_taken(5, 2) is False
+    assert goban.is_taken(3, 3) is False
+
+
 def test_square_shape_is_taken():
     goban = Goban(
         [
