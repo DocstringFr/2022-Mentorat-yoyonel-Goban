@@ -73,7 +73,7 @@ class SolutionMentoratGoban(Goban):
                                                     (x - 1, y): False,
                                                     (x, y + 1): False,
                                                     (x, y - 1): False}}
-                positions |= new_position
+                positions.update(new_position)
 
         # Aucune liberté trouvée → la position/forme n'est pas libre
         return True
