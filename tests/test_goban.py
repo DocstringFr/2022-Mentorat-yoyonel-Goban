@@ -5,10 +5,8 @@ Ressource fournie par OpenClassRoom pour le sujet/projet
 2022-06-30:
     - ajout d'un marqueur pytest pour renseigner au moteur de test qu'un test `test_black_shape_is_not_taken_when_it_has_a_liberty` ne fonctionne pas (mais on sait pourquoi :p)
 """
-# from goban import Goban
-import pytest
-
-from soluce_mentorat import SolutionMentoratGoban as Goban
+# from soluce_mentorat import SolutionMentoratGoban as Goban
+from soluce_advanced import Goban
 
 
 def test_white_is_taken_when_surrounded_by_black():
