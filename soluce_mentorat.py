@@ -69,10 +69,12 @@ class SolutionMentoratGoban(Goban):
             ):
                 # Ajout de la position à l'historique avec ses positions adjacentes à tester
                 x, y = position_a_tester
-                new_position = {position_a_tester: {(x + 1, y): False,
-                                                    (x - 1, y): False,
-                                                    (x, y + 1): False,
-                                                    (x, y - 1): False}}
+
+                positions_adjacentes_potentielles = {}
+                pos = ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))
+                [positions_adjacentes_potentielles.update({(a, b): False}) for (a, b) in pos if (a, b) not in positions]
+                new_position = {position_a_tester: positions_adjacentes_potentielles}
+
                 positions.update(new_position)
 
         # Aucune liberté trouvée → la position/forme n'est pas libre
