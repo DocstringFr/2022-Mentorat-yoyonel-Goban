@@ -7,75 +7,63 @@
     - ❌ le test unitaire `test_black_shape_is_not_taken_when_it_has_a_liberty`
         sur la forme avec une liberté sur une des pièces ne fonctionne pas (normal)
 """
-from typing import List, Tuple, Union
+from typing import List, Optional
 
 from goban import Goban, Status
-
-
-def get_untested_position(historique: dict, change_etat: bool = False) -> Union[Tuple[int, int], None]:
-    """
-    Récupère une position pas encore testée (état à False)
-    et la passe à True si option change_etat
-
-    Args:
-        historique: Etat des positions adjacentes à la forme
-        change_etat: Option de mise à jour de l'état
-
-    Returns:
-        - une position : (x, y)
-        - None si aucune position trouvée
-    """
-    for position_centre, positions_adjacentes in historique.items():
-        for position_adjacente, etat in positions_adjacentes.items():
-            if not etat:
-                if change_etat:
-                    historique[position_centre][position_adjacente] = True
-                return position_adjacente
 
 
 class SolutionMentoratGoban(Goban):
     def __init__(self, goban: List[str]):
         super().__init__(goban)
 
-    def is_taken(self, x: int, y: int) -> bool:
+    def is_taken(
+        self, x: int, y: int, historic_of_positions: Optional[list] = None
+    ) -> bool:
         """
         si la pierre à une position x, y sur un goban est prise ou pas
         """
         # 1ère étape: ❓ Est ce que la position (x, y) est sur une pierre ou pas ❓
-        status_position_initial = self.get_status(x, y)
+        status_position = self.get_status(x, y)
 
-        if status_position_initial in [Status.EMPTY, Status.OUT]:
+        if status_position == Status.EMPTY or status_position == Status.OUT:
             return False
 
         # 2ème étape: ❓ Est une position adjacente est libre ❓
-        # Initialisation d'un dictionnaire listant les positions adjacentes à tester
-        positions = {(x, y): {(x + 1, y): False,
-                              (x - 1, y): False,
-                              (x, y + 1): False,
-                              (x, y - 1): False}}
+        positions_adjacentes = [
+            ((x + 1, y), self.get_status(x + 1, y)),  # position adjacente ➡ droite
+            ((x - 1, y), self.get_status(x - 1, y)),  # position adjacente ⬅ gauche
+            ((x, y + 1), self.get_status(x, y + 1)),  # position adjacente ⬇ bas
+            ((x, y - 1), self.get_status(x, y - 1)),  # position adjacente ⬆ haute
+        ]
+        if historic_of_positions is None:
+            historic_of_positions = []
+        historic_of_positions.append((x, y))
         # 🔮 Est ce qu'une position adjacente est libre ❓
-        while get_untested_position(positions):
-            position_a_tester = get_untested_position(positions, True)
+        for position_adjacente, status_position_adjacente in positions_adjacentes:
             # ❓ Est ce que la position adjacente est libre ❓
-            status_position_adjacente = self.get_status(*position_a_tester)
             if status_position_adjacente == Status.EMPTY:
                 # ✅ si oui la piece (x, y) n'est pas prise
                 return False
-            # Sinon, si la position adjacente fait partie de la forme
-            # et pas déjà présente dans l'historique
-            elif (
-                    status_position_adjacente == status_position_initial
-                    and position_a_tester not in positions
-            ):
-                # Ajout de la position à l'historique avec ses positions adjacentes à tester
-                x, y = position_a_tester
-
-                positions_adjacentes_potentielles = {}
-                pos = ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))
-                [positions_adjacentes_potentielles.update({(a, b): False}) for (a, b) in pos if (a, b) not in positions]
-                new_position = {position_a_tester: positions_adjacentes_potentielles}
-
-                positions.update(new_position)
-
-        # Aucune liberté trouvée → la position/forme n'est pas libre
+            else:
+                # ? Est-ce que la pierre adjacente est de la même couleur ?
+                if status_position == status_position_adjacente:
+                    # [rec] on poursuit la création d'une forme
+                    # ? Est ce que la position adjacente est dans l'historique des positions visitées ?
+                    if position_adjacente in historic_of_positions:
+                        # si Oui => on est déjà passé par là donc on n'y retourne
+                        pass
+                    else:
+                        print(f"recursive call with position: {position_adjacente}")
+                        if not self.is_taken(
+                            position_adjacente[0],
+                            position_adjacente[1],
+                            historic_of_positions,
+                        ):
+                            return False
+                else:
+                    # c'est une pierre adverse donc la position pour cette direction est prise
+                    pass
+        # ℹ Toute les positions adjacentes ne sont pas libres (i.e une pierre sur chaque position adjacente)
+        print()
+        # => on considère la pièce prise
         return True
