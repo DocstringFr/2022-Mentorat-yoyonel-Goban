@@ -37,8 +37,7 @@ class SolutionMentoratGoban(Goban):
     def __init__(self, goban: List[str]):
         super().__init__(goban)
 
-    def is_taken(
-        self, x: int, y: int) -> bool:
+    def is_taken(self, x: int, y: int) -> bool:
         """
         si la pierre à une position x, y sur un goban est prise ou pas
         """
@@ -56,9 +55,9 @@ class SolutionMentoratGoban(Goban):
                               (x, y - 1): False}}
         # 🔮 Est ce qu'une position adjacente est libre ❓
         while get_untested_position(positions):
-            position_a_tester = get_untested_position(positions, True)
+            position_actuelle = get_untested_position(positions, True)
             # ❓ Est ce que la position adjacente est libre ❓
-            status_position_adjacente = self.get_status(*position_a_tester)
+            status_position_adjacente = self.get_status(*position_actuelle)
             if status_position_adjacente == Status.EMPTY:
                 # ✅ si oui la piece (x, y) n'est pas prise
                 return False
@@ -66,20 +65,18 @@ class SolutionMentoratGoban(Goban):
             # et pas déjà présente dans l'historique
             elif (
                     status_position_adjacente == status_position_initial
-                    and position_a_tester not in positions
+                    and position_actuelle not in positions
             ):
                 # Position actuelle
-                x, y = position_a_tester
+                x, y = position_actuelle
 
                 # Détermination des positions adjacentes à la position actuelle
                 # et retrait de celles déjà testées
-                positions_adjacentes_potentielles = {}
-                pos = ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))
-                [positions_adjacentes_potentielles.update({(x, y): False}) for (x, y) in pos if (x, y) not in positions]
-                new_position = {position_a_tester: positions_adjacentes_potentielles}
+                positions_adjacentes = ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))
+                positions_potentielles = {p: False for p in positions_adjacentes if p not in positions}
 
                 # Ajout de la position actuelle à l'historique avec ses positions adjacentes à tester
-                positions.update(new_position)
+                positions[position_actuelle] = positions_potentielles
 
         # Aucune liberté trouvée → la position/forme n'est pas libre
         return True
