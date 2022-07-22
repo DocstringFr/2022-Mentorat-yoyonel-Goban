@@ -7,7 +7,6 @@
     - ❌ le test unitaire `test_black_shape_is_not_taken_when_it_has_a_liberty`
         sur la forme avec une liberté sur une des pièces ne fonctionne pas (normal)
 """
-
 from typing import List, Tuple, Union
 
 from goban import Goban, Status
@@ -39,8 +38,7 @@ class SolutionMentoratGoban(Goban):
         super().__init__(goban)
 
     def is_taken(
-        self, x: int, y: int, historic_of_positions: Optional[list] = None
-    ) -> bool:
+        self, x: int, y: int) -> bool:
         """
         si la pierre à une position x, y sur un goban est prise ou pas
         """
