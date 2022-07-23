@@ -5,14 +5,25 @@ Ressource fournie par OpenClassRoom pour le sujet/projet
 2022-06-30:
     - ajout d'un marqueur pytest pour renseigner au moteur de test qu'un test `test_black_shape_is_not_taken_when_it_has_a_liberty` ne fonctionne pas (mais on sait pourquoi :p)
 """
-# from goban import Goban
+from typing import Type, TypeVar
+
 import pytest
 
-from soluce_mentorat import SolutionMentoratGoban as Goban
+from goban import Goban
+from soluce_advanced import SolutionAdvancedGoban as SolutionAdvancedGoban
+from soluce_mentorat import SolutionMentoratGoban
+
+# [Subclass in type hinting](https://stackoverflow.com/a/71441339)
+U = TypeVar("U", bound=Goban)
+
+SolutionsToTest = (SolutionMentoratGoban, SolutionAdvancedGoban)
 
 
-def test_white_is_taken_when_surrounded_by_black():
-    goban = Goban(
+@pytest.mark.parametrize("class_object_solution_to_test", SolutionsToTest)
+def test_white_is_taken_when_surrounded_by_black(
+    class_object_solution_to_test: Type[U],
+):
+    goban = class_object_solution_to_test(
         [
             ".#.",
             "#o#",
@@ -23,8 +34,11 @@ def test_white_is_taken_when_surrounded_by_black():
     assert goban.is_taken(1, 1) is True
 
 
-def test_white_is_not_taken_when_it_has_a_liberty():
-    goban = Goban(
+@pytest.mark.parametrize("class_object_solution_to_test", SolutionsToTest)
+def test_white_is_not_taken_when_it_has_a_liberty(
+    class_object_solution_to_test: Type[U],
+):
+    goban = class_object_solution_to_test(
         [
             "...",
             "#o#",
@@ -35,8 +49,9 @@ def test_white_is_not_taken_when_it_has_a_liberty():
     assert goban.is_taken(1, 1) is False
 
 
-def test_black_shape_is_taken_when_surrounded():
-    goban = Goban(
+@pytest.mark.parametrize("class_object_solution_to_test", SolutionsToTest)
+def test_black_shape_is_taken_when_surrounded(class_object_solution_to_test: Type[U]):
+    goban = class_object_solution_to_test(
         [
             "oo.",
             "##o",
@@ -50,8 +65,11 @@ def test_black_shape_is_taken_when_surrounded():
     assert goban.is_taken(1, 2) is True
 
 
-def test_black_shape_is_not_taken_when_it_has_a_liberty():
-    goban = Goban(
+@pytest.mark.parametrize("class_object_solution_to_test", SolutionsToTest)
+def test_black_shape_is_not_taken_when_it_has_a_liberty(
+    class_object_solution_to_test: Type[U],
+):
+    goban = class_object_solution_to_test(
         [
             "oo.",
             "##.",
@@ -65,8 +83,9 @@ def test_black_shape_is_not_taken_when_it_has_a_liberty():
     assert goban.is_taken(1, 2) is False
 
 
-def test_square_shape_is_taken():
-    goban = Goban(
+@pytest.mark.parametrize("class_object_solution_to_test", SolutionsToTest)
+def test_square_shape_is_taken(class_object_solution_to_test: Type[U]):
+    goban = class_object_solution_to_test(
         [
             "oo.",
             "##o",
