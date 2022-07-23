@@ -20,7 +20,7 @@ class Position:
         return Position(self.x + other.x, self.y + other.y)
 
 
-class Goban(OpenClassRoom_Goban):
+class SolutionAdvancedGoban(OpenClassRoom_Goban):
     # https://docs.python.org/3/library/typing.html#type-aliases
     # https://docs.python.org/3/library/typing.html#typing.Final
     DIR_NEIGHBORS: Final[List[Position]] = [
@@ -56,7 +56,7 @@ class Goban(OpenClassRoom_Goban):
         neighbors_status = [
             # https://docs.python.org/3/library/dataclasses.html#dataclasses.astuple
             self.get_status(*astuple(position + dir_neighbor))
-            for dir_neighbor in Goban.DIR_NEIGHBORS
+            for dir_neighbor in SolutionAdvancedGoban.DIR_NEIGHBORS
         ]
 
         # one or more direct neighbors is a free (EMPTY) slot => one freedom available (shape not taken)
@@ -68,7 +68,9 @@ class Goban(OpenClassRoom_Goban):
         # [init] we consider no free mouvement available => shape is taken
         result_is_taken = True
         # loop on each neighbors
-        for dir_neighbor, status_neighbor in zip(Goban.DIR_NEIGHBORS, neighbors_status):
+        for dir_neighbor, status_neighbor in zip(
+            SolutionAdvancedGoban.DIR_NEIGHBORS, neighbors_status
+        ):
             # neighbor position
             next_position = position + dir_neighbor
             # [search] if any neighbors give at least one free mouvement
