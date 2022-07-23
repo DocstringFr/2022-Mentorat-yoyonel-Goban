@@ -63,39 +63,39 @@ class SolutionAdvancedGoban(OpenClassRoom_Goban):
         # update the walk-map (can be accessed because on Goban::is_taken scope)
         self._set_status_on_walk_map(position, StatusWalkMap.VISITED)
 
-        # retrieve all neighbors status
-        neighbors_status = [
-            # https://docs.python.org/3/library/dataclasses.html#dataclasses.astuple
-            self.get_status(*astuple(position + dir_neighbor))
+        # retrieve all neighbors positions and status
+        it_neighbors_positions = (
+            position + dir_neighbor
             for dir_neighbor in SolutionAdvancedGoban.DIR_NEIGHBORS
+        )
+        neighbors = [
+            # https://docs.python.org/3/library/dataclasses.html#dataclasses.astuple
+            (neighbor_position, self.get_status(*astuple(neighbor_position)))
+            for neighbor_position in it_neighbors_positions
         ]
 
         # one or more direct neighbors is a free (EMPTY) slot => one freedom available (shape not taken)
         # https://docs.python.org/3/library/functions.html#any
-        if any(neighbor_status == Status.EMPTY for neighbor_status in neighbors_status):
+        if any(neighbor_status == Status.EMPTY for _, neighbor_status in neighbors):
             # [optim] early exit
             return False
 
         # [init] we consider no free mouvement available => shape is taken
         result_is_taken = True
         # loop on each neighbors
-        for dir_neighbor, status_neighbor in zip(
-            SolutionAdvancedGoban.DIR_NEIGHBORS, neighbors_status
-        ):
+        for neighbor_position, neighbor_status in neighbors:
             # [filter] continue only if neighbor status is not EMPTY or OUT,
             #          or the neighbor stone is not the same color of the current stone
             if (
-                status_neighbor in (Status.EMPTY, Status.OUT)
-                or status_neighbor != current_status
+                neighbor_status in (Status.EMPTY, Status.OUT)
+                or neighbor_status != current_status
             ):
                 continue
-            # neighbor position
-            next_position = position + dir_neighbor
             # [search] if any neighbors give at least one free mouvement
-            if self._get_status_on_walk_map(next_position) != StatusWalkMap.VISITED:
+            if self._get_status_on_walk_map(neighbor_position) != StatusWalkMap.VISITED:
                 # [rec] recursive call on shape's neighbor
                 result_is_taken &= self._recursive_is_taken(
-                    next_position, current_status
+                    neighbor_position, current_status
                 )
                 # if current shape's neighbor has freedom (not taken) => we can exit (from the loop)
                 if not result_is_taken:
